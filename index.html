@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotoMotores - Peças e Serviços</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <h1>MOTOMOTORES</h1>
+                <p>PEÇAS E SERVIÇOS</p>
+            </div>
+            <div class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cart-count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <a href="#" class="active">Todas as Peças</a>
+        <a href="#">Motor</a>
+        <a href="#">Transmissão</a>
+        <a href="#">Elétrica</a>
+    </nav>
+
+    <main class="container">
+        <h2 class="section-title">Catálogo de Peças</h2>
+        
+        <div class="products-grid" id="product-list"></div>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Digite o nome da peça...">
+            <button id="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MotoMotores - Todos os direitos reservados.</p>
+        <p>Hospedado via GitHub Pages</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
