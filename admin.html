@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - MotoMotores</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #121212; color: #fff; padding: 20px; }
+        .admin-container { max-width: 800px; margin: 0 auto; background: #1e1e1e; padding: 30px; border-radius: 8px; border: 1px solid #333; }
+        h1 { color: #cc292b; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: #aaa; }
+        input { width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff; box-sizing: border-box; }
+        button { background-color: #cc292b; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; font-weight: bold; width: 100%; margin-top: 10px; }
+        button:hover { background-color: #a31f22; }
+        
+        table { width: 100%; margin-top: 30px; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #333; }
+        th { background-color: #222; color: #cc292b; }
+        .btn-delete { background-color: #555; padding: 5px 10px; width: auto; font-size: 0.8em; margin-top: 0; }
+        .btn-delete:hover { background-color: #ff0000; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-container">
+        <h1>⚙️ Cadastrar Nova Peça</h1>
+        
+        <form id="form-produto">
+            <div class="form-group">
+                <label>Nome da Peça</label>
+                <input type="text" id="nome" required placeholder="Ex: Filtro de Ar">
+            </div>
+            <div class="form-group">
+                <label>Preço (R$)</label>
+                <input type="number" id="preco" step="0.01" required placeholder="Ex: 45.90">
+            </div>
+            <div class="form-group">
+                <label>Link da Imagem (URL)</label>
+                <input type="url" id="imagem" required placeholder="https://link-da-foto.com/foto.jpg">
+            </div>
+            <div class="form-group">
+                <label>Quantidade em Estoque</label>
+                <input type="number" id="estoque" required placeholder="Ex: 10">
+            </div>
+            <button type="submit">Salvar Produto</button>
+        </form>
+
+        <h2 style="margin-top: 40px; border-top: 1px solid #333; padding-top: 20px;">Estoque Atual</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Preço</th>
+                    <th>Estoque</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-estoque">
+                </tbody>
+        </table>
+        
+        <br>
+        <a href="index.html" style="color: #aaa; text-decoration: none;">&larr; Voltar para a Loja</a>
+    </div>
+
+    <script>
+        // Carrega os produtos da memória
+        let produtos = JSON.parse(localStorage.getItem('moto_produtos')) || [];
+
+        function atualizarTabela() {
+            const tbody = document.getElementById('tabela-estoque');
+            tbody.innerHTML = '';
+
+            produtos.forEach(prod => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${prod.id}</td>
+                        <td>${prod.nome}</td>
+                        <td>R$ ${prod.preco.toFixed(2)}</td>
+                        <td><strong>${prod.estoque}</strong></td>
+                        <td><button class="btn-delete" onclick="removerProduto(${prod.id})">Excluir</button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Função para cadastrar
+        document.getElementById('form-produto').addEventListener('submit', function(e) {
+            e.preventDefault(); // Impede a página de recarregar
+
+            const novoProduto = {
+                id: Date.now(), // Gera um ID único baseado no horário
+                nome: document.getElementById('nome').value,
+                preco: parseFloat(document.getElementById('preco').value),
+                imagem: document.getElementById('imagem').value,
+                estoque: parseInt(document.getElementById('estoque').value)
+            };
+
+            produtos.push(novoProduto); // Adiciona na lista
+            localStorage.setItem('moto_produtos', JSON.stringify(produtos)); // Salva no navegador
+            
+            this.reset(); // Limpa o formulário
+            atualizarTabela(); // Atualiza a tela
+            alert('Produto cadastrado com sucesso!');
+        });
+
+        // Função para remover
+        function removerProduto(id) {
+            if(confirm("Tem certeza que deseja excluir esta peça?")) {
+                produtos = produtos.filter(p => p.id !== id);
+                localStorage.setItem('moto_produtos', JSON.stringify(produtos));
+                atualizarTabela();
+            }
+        }
+
+        // Inicia a tabela ao carregar a página
+        window.onload = atualizarTabela;
+    </script>
+</body>
+</html>
