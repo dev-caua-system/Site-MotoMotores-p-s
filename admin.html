@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Gerencial - MotoMotores</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #121212; color: #fff; margin: 0; padding: 20px; }
+        .dashboard { max-width: 1000px; margin: 0 auto; background: #1e1e1e; padding: 30px; border-radius: 8px; border: 1px solid #333; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .header-admin { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #cc292b; padding-bottom: 10px; margin-bottom: 20px; }
+        .header-admin h1 { color: #cc292b; margin: 0; font-size: 1.8em; }
+        
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-group { margin-bottom: 10px; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        label { display: block; margin-bottom: 5px; color: #aaa; font-size: 0.9em; }
+        input { width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff; box-sizing: border-box; }
+        input:focus { outline: none; border-color: #cc292b; }
+        
+        .btn-salvar { background-color: #cc292b; color: white; border: none; padding: 12px 20px; cursor: pointer; border-radius: 4px; font-weight: bold; width: 100%; margin-top: 15px; font-size: 1.1em; transition: 0.3s; }
+        .btn-salvar:hover { background-color: #a31f22; }
+        
+        .table-container { overflow-x: auto; margin-top: 30px; }
+        table { width: 100%; border-collapse: collapse; min-width: 700px; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #333; }
+        th { background-color: #000; color: #cc292b; font-weight: bold; }
+        tr:hover { background-color: #2a2a2a; }
+        .lucro-positivo { color: #4CAF50; font-weight: bold; }
+        .btn-delete { background-color: transparent; color: #ff4444; border: 1px solid #ff4444; padding: 5px 10px; border-radius: 4px; cursor: pointer; transition: 0.3s; }
+        .btn-delete:hover { background-color: #ff4444; color: white; }
+        .img-preview { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; background: #333; }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+        <div class="header-admin">
+            <h1>⚙️ Cadastro de Produtos</h1>
+            <a href="index.html" style="color: #aaa; text-decoration: none;">&larr; Voltar para a Loja</a>
+        </div>
+        
+        <form id="form-produto">
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label>Nome da Peça / Serviço</label>
+                    <input type="text" id="nome" required placeholder="Ex: Kit Relação Honda Titan 150">
+                </div>
+                <div class="form-group">
+                    <label>Preço de Compra (Custo) R$</label>
+                    <input type="number" id="preco_compra" step="0.01" required placeholder="Ex: 50.00">
+                </div>
+                <div class="form-group">
+                    <label>Preço de Venda (Loja) R$</label>
+                    <input type="number" id="preco_venda" step="0.01" required placeholder="Ex: 95.90">
+                </div>
+                <div class="form-group">
+                    <label>Quantidade em Estoque</label>
+                    <input type="number" id="estoque" required placeholder="Ex: 10">
+                </div>
+                <div class="form-group">
+                    <label>Link da Imagem (URL)</label>
+                    <input type="url" id="imagem" required placeholder="https://link-da-foto.com/foto.jpg">
+                </div>
+            </div>
+            <button type="submit" class="btn-salvar">Salvar Produto no Estoque</button>
+        </form>
+
+        <h2 style="margin-top: 40px; border-top: 1px solid #333; padding-top: 20px; color: #aaa; font-size: 1.2em;">📦 Controle de Estoque Atual</h2>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Img</th>
+                        <th>Nome do Produto</th>
+                        <th>Custo</th>
+                        <th>Venda</th>
+                        <th>Lucro</th>
+                        <th>Estoque</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-estoque"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let produtos = JSON.parse(localStorage.getItem('moto_produtos')) || [];
+
+        function atualizarTabela() {
+            const tbody = document.getElementById('tabela-estoque');
+            tbody.innerHTML = '';
+
+            produtos.forEach(prod => {
+                const custo = prod.precoCompra || 0; 
+                const venda = prod.preco || prod.precoVenda; 
+                const lucro = venda - custo;
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><img src="${prod.imagem}" class="img-preview" alt="foto"></td>
+                        <td>${prod.nome}</td>
+                        <td>R$ ${custo.toFixed(2)}</td>
+                        <td>R$ ${venda.toFixed(2)}</td>
+                        <td class="lucro-positivo">R$ ${lucro.toFixed(2)}</td>
+                        <td><strong>${prod.estoque}</strong> un.</td>
+                        <td><button class="btn-delete" onclick="removerProduto(${prod.id})">Excluir</button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        document.getElementById('form-produto').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            const custo = parseFloat(document.getElementById('preco_compra').value);
+            const venda = parseFloat(document.getElementById('preco_venda').value);
+
+            if(venda < custo) {
+                if(!confirm("Atenção: O preço de venda está MENOR que o preço de custo. Deseja salvar mesmo assim?")) {
+                    return; 
+                }
+            }
+
+            const novoProduto = {
+                id: Date.now(), 
+                nome: document.getElementById('nome').value,
+                precoCompra: custo,      
+                preco: venda,            
+                estoque: parseInt(document.getElementById('estoque').value),
+                imagem: document.getElementById('imagem').value
+            };
+
+            produtos.push(novoProduto); 
+            localStorage.setItem('moto_produtos', JSON.stringify(produtos)); 
+            
+            this.reset(); 
+            atualizarTabela(); 
+            alert('Produto adicionado ao estoque com sucesso!');
+        });
+
+        function removerProduto(id) {
+            if(confirm("Tem certeza que deseja excluir esta peça do seu estoque?")) {
+                produtos = produtos.filter(p => p.id !== id);
+                localStorage.setItem('moto_produtos', JSON.stringify(produtos));
+                atualizarTabela();
+            }
+        }
+
+        window.onload = atualizarTabela;
+    </script>
+</body>
+</html>
