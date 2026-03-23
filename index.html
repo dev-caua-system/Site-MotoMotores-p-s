@@ -3,47 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MotoMotores - Peças e Serviços</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>FeelInk - Transforme sua Música em Arte</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <header>
-        <div class="header-container">
-            <div class="logo">
-                <h1>MOTOMOTORES</h1>
-                <p>PEÇAS E SERVIÇOS</p>
+        <div class="container">
+            <div class="logo-area">
+                <img src="logo.png" alt="FeelInk Logo" class="logo-img">
             </div>
-            <div class="cart-icon">
-                <i class="fas fa-shopping-cart"></i>
-                <span id="cart-count">0</span>
-            </div>
+            <p class="tagline">Sua música favorita, imortalizada em arte personalizada.</p>
         </div>
     </header>
 
-    <nav>
-        <a href="#" class="active">Todas as Peças</a>
-        <a href="#">Motor</a>
-        <a href="#">Transmissão</a>
-        <a href="#">Elétrica</a>
-    </nav>
+    <main>
+        <div class="container main-content">
+            
+            <section class="pedido-section">
+                <div class="card card-neon-blue">
+                    <h2>Crie Sua Arte</h2>
+                    <p class="instrucoes">Envie-nos a música, a sua imagem e escolha um estilo.</p>
+                    
+                    <form action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data">
+                        
+                        <input type="hidden" name="access_key" value="b0b4cfe9-5de7-4fa1-98d5-df4e42a2188b">
+                        
+                        <input type="hidden" name="subject" value="🎨 Novo Pedido FeelInk na Feira!">
+                        <input type="hidden" name="from_name" value="Sistema FeelInk">
+                        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
 
-    <main class="container">
-        <h2 class="section-title">Catálogo de Peças</h2>
-        
-        <div class="products-grid" id="product-list"></div>
-        <div class="search-container">
-            <input type="text" id="search-input" placeholder="Digite o nome da peça...">
-            <button id="search-btn"><i class="fas fa-search"></i></button>
+                        <div class="input-group">
+                            <label for="musica">Qual é a sua música?</label>
+                            <input type="text" id="musica" name="musica" placeholder="Link do Spotify, YouTube ou Nome da Música" required>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="imagem">Sua foto ou imagem de referência</label>
+                            <div class="file-upload-wrapper">
+                                <input type="file" id="imagem" name="imagem" accept="image/*" class="file-input" required>
+                                <span class="file-custom-btn">📸 Escolher Imagem</span>
+                                <span id="file-name" class="file-name">Nenhuma imagem selecionada</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="estilo">Selecione o estilo artístico</label>
+                            <select id="estilo" name="estilo" required>
+                                <option value="" disabled selected>-- Escolha um Estilo --</option>
+                                <option value="capa_album">Capa de Álbum Abstrata</option>
+                                <option value="retrato_minimalista">Retrato Minimalista</option>
+                                <option value="arte_neon">Visual Neon Retro</option>
+                                <option value="realista">Realista Premium</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-neon-purple">ENVIAR MEU PEDIDO</button>
+
+                    </form>
+                </div>
+            </section>
+
+            <section class="como-funciona-section">
+                <div class="card card-neon-purple">
+                    <h3>Como Funciona</h3>
+                    <div class="passos-wrapper">
+                        <div class="passo">
+                            <div class="passo-numero">1</div>
+                            <p>Preencha o formulário acima com a música e a foto.</p>
+                        </div>
+                        <div class="passo">
+                            <div class="passo-numero">2</div>
+                            <p>Nossa equipe recebe o pedido instantaneamente.</p>
+                        </div>
+                        <div class="passo">
+                            <div class="passo-numero">3</div>
+                            <p>Você recebe a sua arte personalizada direto na feira!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
         </div>
     </main>
 
     <footer>
-        <p>&copy; 2026 MotoMotores - Todos os direitos reservados.</p>
-        <p>Hospedado via GitHub Pages</p>
+        <div class="container footer-content">
+            <p>&copy; 2024 FeelInk by VCW. Todos os direitos reservados.</p>
+            <p>Projeto Exclusivo para Feira de Exposições.</p>
+        </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        const fileInput = document.querySelector('.file-input');
+        const fileNameSpan = document.querySelector('.file-name');
+
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files.length > 0) {
+                fileNameSpan.textContent = this.files[0].name;
+            } else {
+                fileNameSpan.textContent = "Nenhuma imagem selecionada";
+            }
+        });
+    </script>
 </body>
 </html>
