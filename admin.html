@@ -6,7 +6,7 @@
     <title>Painel Gerencial - MotoMotores</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #121212; color: #fff; margin: 0; padding: 20px; }
-        .dashboard { max-width: 1000px; margin: 0 auto; background: #1e1e1e; padding: 30px; border-radius: 8px; border: 1px solid #333; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .dashboard { max-width: 1000px; margin: 0 auto; background: #1e1e1e; padding: 30px; border-radius: 8px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
         .header-admin { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #cc292b; padding-bottom: 10px; margin-bottom: 20px; }
         .header-admin h1 { color: #cc292b; margin: 0; font-size: 1.8em; }
         
@@ -14,21 +14,21 @@
         .form-group { margin-bottom: 10px; }
         .form-group.full-width { grid-column: 1 / -1; }
         label { display: block; margin-bottom: 5px; color: #aaa; font-size: 0.9em; }
-        input { width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff; box-sizing: border-box; }
+        input { width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff; box-sizing: border-box; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3); }
         input:focus { outline: none; border-color: #cc292b; }
         
-        .btn-salvar { background-color: #cc292b; color: white; border: none; padding: 12px 20px; cursor: pointer; border-radius: 4px; font-weight: bold; width: 100%; margin-top: 15px; font-size: 1.1em; transition: 0.3s; }
-        .btn-salvar:hover { background-color: #a31f22; }
+        .btn-salvar { background-color: #cc292b; color: white; border: none; padding: 12px 20px; cursor: pointer; border-radius: 4px; font-weight: bold; width: 100%; margin-top: 15px; font-size: 1.1em; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .btn-salvar:hover { background-color: #a31f22; transform: translateY(-2px); }
         
         .table-container { overflow-x: auto; margin-top: 30px; }
         table { width: 100%; border-collapse: collapse; min-width: 700px; }
         th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #333; }
-        th { background-color: #000; color: #cc292b; font-weight: bold; }
+        th { background-color: #000; color: #cc292b; font-weight: bold; border-bottom: 2px solid #cc292b; }
         tr:hover { background-color: #2a2a2a; }
         .lucro-positivo { color: #4CAF50; font-weight: bold; }
         .btn-delete { background-color: transparent; color: #ff4444; border: 1px solid #ff4444; padding: 5px 10px; border-radius: 4px; cursor: pointer; transition: 0.3s; }
         .btn-delete:hover { background-color: #ff4444; color: white; }
-        .img-preview { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; background: #333; }
+        .img-preview { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; background: #333; border: 1px solid #555; }
     </style>
 </head>
 <body>
@@ -36,7 +36,7 @@
     <div class="dashboard">
         <div class="header-admin">
             <h1>⚙️ Cadastro de Produtos</h1>
-            <a href="index.html" style="color: #aaa; text-decoration: none;">&larr; Voltar para a Loja</a>
+            <a href="index.html" style="color: #aaa; text-decoration: none; border: 1px solid #555; padding: 5px 10px; border-radius: 4px;">&larr; Voltar para a Loja</a>
         </div>
         
         <form id="form-produto">
